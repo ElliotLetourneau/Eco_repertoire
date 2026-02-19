@@ -35,7 +35,7 @@ Un répertoire visuel de marques et produits respectueux de l'environnement, cla
 5. Votre site sera accessible à :
 
 ```
-https://[votre-username].github.io/[nom-du-repo]
+https://elliotletourneau.github.io/Eco_repertoire/
 ```
 
 ## 🛠️ Utilisation locale
