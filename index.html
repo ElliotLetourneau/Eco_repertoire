@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Éco Répertoire</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e8efe4;
+    --bg2: #dfe8da;
+    --card: #f4f8f1;
+    --card-hover: #e4ede0;
+    --accent: #4a8e28;
+    --accent2: #6ab840;
+    --text: #1e2e1b;
+    --muted: #6a9060;
+    --border: #bdd4b4;
+    --tag: #d6e8cf;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 60px 40px 40px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(90,158,56,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(126,200,80,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .logo-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .leaf-icon {
+    width: 36px; height: 36px;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-top: 10px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 40px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(232,239,228,0.93);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-box {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 14px 20px 14px 50px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-box input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(126,200,80,0.15);
+  }
+
+  .search-box input::placeholder { color: var(--muted); }
+
+  .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    width: 18px; height: 18px;
+  }
+
+  .count-badge {
+    font-size: 0.85rem;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 300;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  /* CATEGORY */
+  .category-block {
+    margin-bottom: 60px;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .cat-count {
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--tag);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* GRID */
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  /* BRAND CARD */
+  .brand-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(90,158,56,0.06), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .brand-card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .brand-card:hover::before { opacity: 1; }
+
+  .logo-wrap {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .logo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+
+  .logo-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--tag), var(--border));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-size: 0.78rem;
+    font-weight: 400;
+    text-align: center;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .brand-tag {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* NO RESULTS */
+  .no-results {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+    display: none;
+  }
+
+  .no-results .big { font-size: 3rem; margin-bottom: 12px; }
+  .no-results p { font-size: 1.1rem; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    header, .search-wrap, .content { padding-left: 20px; padding-right: 20px; }
+    .brands-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-line">
+      <h1>Éco <span>Répertoire</span></h1>
+    </div>
+    <p class="subtitle">Découvrez des marques et produits respectueux de l'environnement</p>
+  </div>
+</header>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Rechercher une marque ou catégorie…" autocomplete="off">
+  </div>
+  <span class="count-badge" id="countBadge"></span>
+</div>
+
+<div class="content" id="mainContent">
+
+  <!-- Categories will be injected by JS -->
+
+</div>
+
+<div class="no-results" id="noResults">
+  <div class="big">🌱</div>
+  <p>Aucun résultat trouvé</p>
+</div>
+
+<script>
+const data = [
+  {
+    category: "Objets environnementaux",
+    emoji: "♻️",
+    brands: [
+      { name: "Tushy", url: "https://hellotushy.com/", tag: "Bidet" },
+      { name: "Sprout", url: "https://sproutworld.com/", tag: "Crayon" },
+      { name: "Plaex", url: "https://plaex.net/", tag: "Poubelle" },
+      { name: "BESIDE", url: "https://shop.beside.media/", tag: "Magasine éco" },
+      { name: "Alvéole", url: "https://www.alveole.buzz/" },
+      { name: "A good company", url: "https://agood.com/" },
+      { name: "Chopvalue", url: "https://chopvalue.com/pages/recycle" },
+      { name: "Good on you", url: "https://goodonyou.eco/" },
+      { name: "Growcer", url: "https://www.thegrowcer.ca/" },
+      { name: "Kotmo", url: "https://kotmo.ca/" },
+      { name: "Lafabrikéco.", url: "https://www.lafabrikeco.com/" },
+      { name: "LifeWithoutPlastic", url: "https://lifewithoutplastic.com/" },
+      { name: "Ma zone Québec", url: "https://www.mazonequebec.com/" },
+      { name: "Package free shop", url: "https://packagefreeshop.com/" },
+      { name: "Polystyvert", url: "http://www.polystyvert.com/fr/" },
+      { name: "Preserve", url: "https://www.preserve.eco/" },
+      { name: "Rareform", url: "https://www.rareform.com/" },
+      { name: "Roadloft", url: "https://roadloft.com/" },
+      { name: "Repreve", url: "https://repreve.com/" },
+      { name: "Repurpose", url: "https://repurpose.global/" },
+      { name: "Tentree", url: "https://www.tentree.ca/" },
+      { name: "Terracycle", url: "https://www.terracycle.com/fr-CA/" },
+      { name: "Thrive market", url: "https://thrivemarket.com/" },
+    ]
+  },
+  {
+    category: "Soins buccaux",
+    emoji: "🦷",
+    brands: [
+      { name: "Bogobrush", url: "https://www.bogobrush.com/", tag: "Brosse à dent" },
+      { name: "Brushwithbamboo", url: "https://www.brushwithbamboo.com/", tag: "Brosse à dent" },
+      { name: "Akamai", url: "https://www.akamaibasics.com/", tag: "Brosse à dent et +" },
+      { name: "Ola bamboo", url: "https://olabamboo.com/", tag: "Brosse à dent et +" },
+      { name: "Terra & co", url: "https://www.terraandco.com/", tag: "Brosse à dent et +" },
+      { name: "The Humble co.", url: "https://www.thehumble.co/", tag: "Brosse à dent et +" },
+      { name: "Foreo", url: "https://www.foreo.com/fr/shop/oral-care", tag: "Brosse électrique" },
+      { name: "Quip", url: "https://www.getquip.com/", tag: "Brosse électrique" },
+      { name: "BrushD", url: "https://brushd.co.uk/products/re-cyclable-electric-toothbrush-head", tag: "Tête recyclable" },
+      { name: "Davids", url: "https://davids-usa.com/", tag: "Dentifrice" },
+      { name: "Unpaste", url: "https://unpaste.us/", tag: "Dentifrice" },
+    ]
+  },
+  {
+    category: "Soins corporels",
+    emoji: "🧴",
+    brands: [
+      { name: "Culture sauvage", url: "http://www.culturesauvage.com/item/coming-soon-reusable-silicon-swab", tag: "Coton tige" },
+      { name: "Nixit", url: "https://nixit.ca/pages/menstrual-cup", tag: "Coupe menstruelle" },
+      { name: "Bai-li", url: "https://bailideodorant.com/", tag: "Déodorant" },
+      { name: "Switchfresh", url: "https://www.switchfresh.com/", tag: "Déodorant" },
+      { name: "Wild", url: "https://www.wearewild.com/", tag: "Déodorant" },
+      { name: "Kiima", url: "https://kiima.co/fr", tag: "Déodorant (QC)" },
+      { name: "Dropps", url: "https://www.dropps.com/", tag: "Détergent" },
+      { name: "The unscented co.", url: "https://unscentedco.com/", tag: "Lessive et +" },
+      { name: "Patch strips", url: "https://patchstrips.com/", tag: "Pansement" },
+      { name: "Who gives a crap", url: "https://au.whogivesacrap.org/", tag: "Papier de toilette" },
+      { name: "Leaf shave", url: "https://leafshave.com/product/starter-bundle/", tag: "Rasoir manuel" },
+      { name: "Supply", url: "https://supply.co/products/the-single-edge-razor", tag: "Rasoir manuel" },
+      { name: "Wild lads", url: "https://wildlads.ca/", tag: "Rasoir manuel" },
+      { name: "Belle à croquer", url: "https://belleacroquer.ca/", tag: "Savon et +" },
+      { name: "Soapbottle", url: "https://www.projectsoapbottle.com/", tag: "Savon" },
+      { name: "Oneka", url: "https://www.onekaelements.com/fr", tag: "Shampoing" },
+      { name: "DAME", url: "https://wearedame.co/", tag: "Tampons" },
+    ]
+  },
+  {
+    category: "Habillement",
+    emoji: "👗",
+    brands: [
+      { name: "Mylo", url: "https://www.mylo-unleather.com/stories/mushroom-leather/", tag: "Cuir champignon" },
+      { name: "Desserto", url: "https://desserto.com.mx/home", tag: "Cuir vegan" },
+      { name: "Terraties", url: "https://www.terraties.com/", tag: "Élastique à cheveux" },
+      { name: "Péla vision", url: "https://pelavision.com/collections/all-sunglasses", tag: "Lunettes de soleil" },
+      { name: "Sunski", url: "https://store.sunski.com/products/seacliff", tag: "Lunettes de soleil" },
+      { name: "Bellroy", url: "https://fr.bellroy.com/", tag: "Sac" },
+      { name: "Chicobag", url: "https://chicobag.com/", tag: "Sac" },
+      { name: "Fjallraven", url: "https://www.fjallraven.com/ca", tag: "Sac" },
+      { name: "Teva", url: "https://tevaonline.ca/", tag: "Sandales" },
+      { name: "Allbirds", url: "https://www.allbirds.ca/products/mens-wool-runners-natural-black", tag: "Souliers" },
+      { name: "Cariuma", url: "https://cariuma.com/", tag: "Souliers" },
+      { name: "D'bris", url: "https://us.dbrisshoes.com/", tag: "Souliers" },
+      { name: "Veja", url: "https://www.veja-store.com/fr_fr/", tag: "Souliers" },
+      { name: "Bamboo", url: "https://bamboounderwear.ca/", tag: "Sous-vêtements" },
+      { name: "Knix", url: "https://knix.ca/", tag: "Sous-vêtements" },
+      { name: "Bananatex", url: "https://www.bananatex.info/", tag: "Textile en banane" },
+      { name: "Abaka", url: "https://abaka.ca/", tag: "Vêtements" },
+      { name: "C'est beau", url: "https://cestbeau.co/fr/", tag: "Vêtements" },
+      { name: "Ecologyst", url: "https://ecologyst.com/", tag: "Vêtements" },
+      { name: "Life is good", url: "https://www.lifeisgood.com/men/solid-tees/", tag: "Vêtements" },
+      { name: "Patagonia", url: "https://www.patagonia.ca/home/", tag: "Vêtements extérieur" },
+      { name: "Petit pli", url: "https://shop.petitpli.com/", tag: "Vêtements enfant" },
+    ]
+  },
+  {
+    category: "Mode de seconde main",
+    emoji: "🔄",
+    brands: [
+      { name: "Poshmark", url: "https://poshmark.com/" },
+      { name: "RealReal", url: "https://www.therealreal.com/" },
+      { name: "REI", url: "https://www.rei.com/" },
+      { name: "ThredUp", url: "https://www.thredup.com/" },
+      { name: "Vestiaire collective", url: "https://fr.vestiairecollective.com/" },
+      { name: "Wornwear", url: "https://wornwear.patagonia.com/" },
+    ]
+  },
+  {
+    category: "Cuisine",
+    emoji: "🍽️",
+    brands: [
+      { name: "Jarware", url: "https://www.jarware.com/", tag: "Accessoire pot mason" },
+      { name: "KleanKanteen", url: "https://www.kleankanteen.com/products/wide-mouth-water-bottle-27oz", tag: "Bouteille" },
+      { name: "Zera", url: "https://wlabsinnovations.com/pages/zera", tag: "Composteur" },
+      { name: "FoodHuggers", url: "https://foodhuggers.com/", tag: "Protège-fruits/légumes" },
+      { name: "Igloo Recool", url: "https://www.igloocoolers.com/products/26030-recool-16-qt-cooler", tag: "Glacière" },
+      { name: "Ecobags", url: "https://www.ecobags.com/", tag: "Sacs d'épicerie" },
+      { name: "Un-plastic wrap", url: "https://seedsprout.com.au/collections/just-in/products/un-plastic-wrap", tag: "Saranrap" },
+      { name: "Forkanife", url: "https://www.kickstarter.com/projects/1574877482/forkanife-an-innovative-replacement-to-plastic-cutlery", tag: "Ustensiles" },
+      { name: "Magware", url: "https://www.kickstarter.com/projects/fullwindsor/magware-magnetic-flatware", tag: "Ustensiles" },
+    ]
+  },
+  {
+    category: "Technologie",
+    emoji: "💻",
+    brands: [
+      { name: "Subpod", url: "https://subpod.com/", tag: "Compost" },
+      { name: "Aiaiai", url: "https://aiaiai.audio/", tag: "Écouteurs" },
+      { name: "Solarwindow", url: "https://www.solarwindow.com/", tag: "Fenêtre solaire" },
+      { name: "UBIQD", url: "https://ubiqd.com/solar/", tag: "Fenêtre solaire" },
+      { name: "Framework", url: "https://frame.work/ca/en", tag: "Ordinateur" },
+      { name: "Nimble", url: "https://www.gonimble.com/", tag: "Produit technologique" },
+      { name: "Homebiogas", url: "https://www.homebiogas.com/", tag: "Biogaz maison" },
+      { name: "Fairphone", url: "https://www.fairphone.com/fr/", tag: "Téléphone" },
+      { name: "Tesla Solar", url: "https://www.tesla.com/fr_CA/solarglass", tag: "Toit solaire" },
+    ]
+  },
+  {
+    category: "Nourriture",
+    emoji: "🥗",
+    brands: [
+      { name: "Loop", url: "https://shop.loopmission.com/", tag: "Boissons" },
+      { name: "Bro dough", url: "https://brodough.ca/", tag: "Pâte à biscuits" },
+      { name: "Sweets from the Earth", url: "https://sweetsfromtheearth.com/", tag: "Patisseries" },
+      { name: "Maturin", url: "https://www.maturin.ca/" },
+    ]
+  },
+  {
+    category: "Matériaux de construction",
+    emoji: "🧱",
+    brands: [
+      { name: "FabBRICK", url: "https://www.fab-brick.com/", tag: "Briques" },
+      { name: "Plaex", url: "https://plaex.ca/", tag: "Briques" },
+      { name: "Nouveau monde graphite", url: "https://nouveaumonde.ca/", tag: "Mine à ciel ouvert" },
+      { name: "Gjenge", url: "https://www.gjenge.co.ke/projects", tag: "Briques plastiques" },
+    ]
+  },
+  {
+    category: "Meubles",
+    emoji: "🪑",
+    brands: [
+      { name: "Fully", url: "https://www.fully.com/", tag: "Bureaux et chaises" },
+      { name: "Avocado", url: "https://www.avocadogreenmattress.com/", tag: "Matelas" },
+    ]
+  },
+  {
+    category: "Sports",
+    emoji: "🏔️",
+    brands: [
+      { name: "Mountain Flow", url: "https://mountainflow.com/", tag: "Cire à ski" },
+    ]
+  },
+  {
+    category: "Certifications",
+    emoji: "🏅",
+    brands: [
+      { name: "B Corporation", url: "https://www.bcorporation.net/", tag: "Impact social & environnemental" },
+      { name: "1% for the Planet", url: "https://www.onepercentfortheplanet.org/", tag: "1% des ventes aux OSBL" },
+      { name: "Fair Trade", url: "https://www.fairtrade.net/", tag: "Commerce équitable" },
+      { name: "GOTS", url: "https://global-standard.org/", tag: "Textile biologique" },
+      { name: "OEKO-TEX", url: "https://www.oeko-tex.com/", tag: "Textile sans substances nocives" },
+      { name: "FSC", url: "https://fsc.org/", tag: "Gestion forestière responsable" },
+      { name: "Rainforest Alliance", url: "https://www.rainforest-alliance.org/", tag: "Biodiversité & durabilité" },
+      { name: "Écologo / UL", url: "https://www.ul.com/resources/ecologo-certification-program", tag: "Certification canadienne" },
+      { name: "Cradle to Cradle", url: "https://www.c2ccertified.org/", tag: "Économie circulaire" },
+      { name: "Climate Neutral", url: "https://www.climateneutral.org/", tag: "Neutralité carbone" },
+      { name: "Good on You", url: "https://goodonyou.eco/", tag: "Mode éthique & durable" },
+    ]
+  },
+];
+
+function getFaviconUrl(url) {
+  try {
+    const domain = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+  } catch { return null; }
+}
+
+function getInitials(name) {
+  return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+
+function buildCard(brand) {
+  const faviconUrl = getFaviconUrl(brand.url);
+  const initials = getInitials(brand.name);
+  return `
+    <a class="brand-card" href="${brand.url}" target="_blank" rel="noopener">
+      <div class="logo-wrap">
+        <img src="${faviconUrl}" alt="${brand.name}" 
+          onerror="this.parentElement.outerHTML='<div class=\\'logo-placeholder\\'>${initials}</div>'"
+          loading="lazy">
+      </div>
+      <span class="brand-name">${brand.name}</span>
+      ${brand.tag ? `<span class="brand-tag">${brand.tag}</span>` : ''}
+    </a>
+  `;
+}
+
+function buildCategory(cat) {
+  return `
+    <div class="category-block" data-category="${cat.category.toLowerCase()}">
+      <div class="cat-header">
+        <span style="font-size:1.5rem">${cat.emoji}</span>
+        <h2 class="cat-title">${cat.category}</h2>
+        <span class="cat-count">${cat.brands.length} marques</span>
+      </div>
+      <div class="brands-grid">
+        ${cat.brands.map(buildCard).join('')}
+      </div>
+    </div>
+  `;
+}
+
+const content = document.getElementById('mainContent');
+const searchInput = document.getElementById('searchInput');
+const countBadge = document.getElementById('countBadge');
+const noResults = document.getElementById('noResults');
+
+// Render
+content.innerHTML = data.map(buildCategory).join('');
+
+// Count
+const totalBrands = data.reduce((acc, cat) => acc + cat.brands.length, 0);
+countBadge.textContent = `${totalBrands} marques`;
+
+// Search
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  let visibleCount = 0;
+
+  document.querySelectorAll('.category-block').forEach((block, i) => {
+    const cat = data[i];
+    const catMatch = cat.category.toLowerCase().includes(q);
+
+    const cards = block.querySelectorAll('.brand-card');
+    let anyVisible = false;
+
+    cards.forEach((card, j) => {
+      const brand = cat.brands[j];
+      const brandMatch = brand.name.toLowerCase().includes(q) || (brand.tag || '').toLowerCase().includes(q);
+      const show = !q || catMatch || brandMatch;
+      card.classList.toggle('hidden', !show);
+      if (show) { anyVisible = true; visibleCount++; }
+    });
+
+    block.classList.toggle('hidden', !anyVisible);
+  });
+
+  countBadge.textContent = q ? `${visibleCount} résultat${visibleCount !== 1 ? 's' : ''}` : `${totalBrands} marques`;
+  noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+});
+</script>
+</body>
+</html>
